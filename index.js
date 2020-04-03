@@ -197,12 +197,13 @@ function toSql(options, parsed) {
 	}, parsed);
 }
 
-function withAnalysis(options) {
-	const {yasql, baseTable}=options;
+function withAnalysis(options, text) {
+	const {baseTable}=options;
+	text = text || options.text;
 
 	if(!baseTable) throw new Error('baseTable required');
 
-	const parsed = parse(yasql);
+	const parsed = parse(text);
 	const cleaned = toSql(options, parsed);
 
 	let refsByTable={};

@@ -28,8 +28,9 @@ function walkNodes(options,parsed) {
 	return internal(parsed);
 }
 const toSqlHandlers = {
-	'column': (node,{tableFn,fieldFn, defaultTable}) => {
-		const{table=defaultTable,name}=node;
+	'column': (node,{tableFn,fieldFn, baseTable}) => {
+		let{table,name}=node;
+		table = table || baseTable;
 		if(table) return `${tableFn(table)}.${fieldFn(name)}`;
 		return fieldFn(name);
 	},
@@ -187,24 +188,20 @@ const required=['fieldFn','valueFn','tableFn','functions'];
 function toSql(options, parsed) {
 	const missing = required.filter(x => !options[x]);
 	if(missing.length) throw new Error(missing.join(', ') + ' are required parameters');
-	const {defaultTable,fieldFn,tableFn,valueFn,functions}=options;
+	const {baseTable,fieldFn,tableFn,valueFn,functions}=options;
 
 	Object.keys(functions).forEach(fn => functions[fn.toLowerCase()]=functions[fn]);
 
 	return walkNodes({
 		handlers: toSqlHandlers,
-		defaultTable,fieldFn,tableFn,valueFn,functions
+		baseTable,fieldFn,tableFn,valueFn,functions
 	}, parsed);
 }
 
-function withAnalysis(options, text) {
-	const {baseTable}=options;
-	text = text || options.text;
-
-	if(!baseTable) throw new Error('baseTable required');
-
-	const parsed = parse(text);
-	const cleaned = toSql(options, parsed);
+function getRefsByTable(options, parsed) {
+	parsed = parsed || options.parsed || options;
+	if(typeof parsed == 'string') parsed = parse(parsed);
+	let baseTable = options.baseTable || 'baseTable';
 
 	let refsByTable={};
 	function walk(node) {
@@ -227,7 +224,21 @@ function withAnalysis(options, text) {
 		throw new Error("Invalid SQL generated");
 	}
 
+	return refsByTable;
+}
+
+function withAnalysis(options, text) {
+	const {baseTable}=options;
+	text = text || options.text;
+
+	if(!baseTable) throw new Error('baseTable required');
+
+	const parsed = parse(text);
+	const cleaned = toSql(options, parsed);
+
+	const refsByTable = getRefsByTable(options, parsed);
+
 	return {cleaned, refsByTable};
 }
 
-module.exports={toSql,parse,withAnalysis};
+module.exports={toSql,parse,withAnalysis,getRefsByTable};

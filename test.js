@@ -122,10 +122,10 @@ describe('ifnull', () => {
 		'when (1 + y) is not null then (1 + y) else (2 + z) end');
 });
 
-function testAnalysis(baseTable,yasql,expected) {
-	it('should correctly analyze `'+yasql+'`', () => {
+function testAnalysis(baseTable,text,expected) {
+	it('should correctly analyze `'+text+'`', () => {
 		const result = withAnalysis({
-			yasql,baseTable,
+			text,baseTable,
 
 			fieldFn: (f => f),
 			tableFn: (f => f),
@@ -148,15 +148,15 @@ describe('withAnalysis(x)', ()=> {
 		refsByTable: {}
 	});
 	testAnalysis('test','x+1',{
-		cleaned: '(x + 1)',
+		cleaned: '(test.x + 1)',
 		refsByTable: {test: {x:1}}
 	});
 	testAnalysis('test1','x+test2.y',{
-		cleaned: '(x + test2.y)',
+		cleaned: '(test1.x + test2.y)',
 		refsByTable: {test1: {x:1}, test2:{y:1}}
 	});
 	testAnalysis('t', 'if(x,y+1,test.z)', {
-		cleaned: 'if(x, (y + 1), test.z)',
+		cleaned: 'if(t.x, (t.y + 1), test.z)',
 		refsByTable: {t: {x:1,y:1}, test:{z:1}}
 	});
 });

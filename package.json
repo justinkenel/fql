@@ -33,6 +33,6 @@
     }
   },
   "lint-staged": {
-    "./bots/**/*.js": "eslint"
+    "./*.js": "eslint"
   }
 }

@@ -1,6 +1,6 @@
 const nearley = require('nearley');
-const grammar = require('./fql-parse');
-const debug = require("debug")("fql");
+const grammar = require('./yasql-parse');
+const debug = require("debug")("yasql");
 
 function parse(sql) {
 	sql=sql.trim();
@@ -198,11 +198,11 @@ function toSql(options, parsed) {
 }
 
 function withAnalysis(options) {
-	const {fql, baseTable}=options;
+	const {yasql, baseTable}=options;
 
 	if(!baseTable) throw new Error('baseTable required');
 
-	const parsed = parse(fql);
+	const parsed = parse(yasql);
 	const cleaned = toSql(options, parsed);
 
 	let refsByTable={};

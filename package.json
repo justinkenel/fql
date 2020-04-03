@@ -1,22 +1,22 @@
 {
-  "name": "fql",
+  "name": "yasql",
   "version": "0.1.0",
   "description": "A limited query language, used to define component parts of a query",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test.js",
-    "compile": "./compile_fql"
+    "compile": "./compile_yasql"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justinkenel/fql.git"
+    "url": "git+https://github.com/justinkenel/yasql.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/justinkenel/fql/issues"
+    "url": "https://github.com/justinkenel/yasql/issues"
   },
-  "homepage": "https://github.com/justinkenel/fql#readme",
+  "homepage": "https://github.com/justinkenel/yasql#readme",
   "dependencies": {
     "nearley": "^2.19.1"
   },

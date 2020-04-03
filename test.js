@@ -122,10 +122,10 @@ describe('ifnull', () => {
 		'when (1 + y) is not null then (1 + y) else (2 + z) end');
 });
 
-function testAnalysis(baseTable,fql,expected) {
-	it('should correctly analyze `'+fql+'`', () => {
+function testAnalysis(baseTable,yasql,expected) {
+	it('should correctly analyze `'+yasql+'`', () => {
 		const result = withAnalysis({
-			fql,baseTable,
+			yasql,baseTable,
 
 			fieldFn: (f => f),
 			tableFn: (f => f),

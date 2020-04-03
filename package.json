@@ -1,0 +1,37 @@
+{
+  "name": "fql",
+  "version": "0.1.0",
+  "description": "A limited query language, used to define component parts of a query",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test.js",
+    "compile": "./compile_fql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justinkenel/fql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justinkenel/fql/issues"
+  },
+  "homepage": "https://github.com/justinkenel/fql#readme",
+  "dependencies": {
+    "nearley": "^2.19.1"
+  },
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./bots/**/*.js": "eslint"
+  }
+}
